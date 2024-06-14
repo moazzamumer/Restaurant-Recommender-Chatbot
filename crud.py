@@ -76,38 +76,33 @@ def execute_sql_query(query):
         conn.close()
 
 
-# Assuming the response_text is obtained from the model
-# response_text = """
-# Okay, I've taken your preferences. Here's your SQL query:
-# ```sql
-# SELECT
-#   RI.name,
-#   RI.map_link,
-#   RI.contact_info,
-#   RI.rating,
-#   RI.no_of_reviews
-# FROM Restaurant_Info AS RI
-# JOIN Restaurant_Keywords AS RK
-#   ON RI.restaurant_id = RK.restaurant_id
-# JOIN Keywords AS K
-#   ON RK.keyword_id = K.keyword_id
-# WHERE
-#   K.keyword_name = 'pizza'
-#   AND RI.restaurant_id IN (
-#     SELECT
-#       restaurant_id
-#     FROM Restaurant_Info
-#     WHERE
-#       name LIKE '%30%'
-#   )
-#   AND RI.restaurant_id IN (
-#     SELECT
-#       restaurant_id
-#     FROM Restaurant_Speciality
-#     WHERE
-#       speciality_id = 3
-#   );```
-# """
 
-# x = extract_sql_query(response_text)
+
+# query = """SELECT
+#         RI.name,
+#         RI.map_link,
+#         RI.contact_info,
+#         RI.rating,
+#         RI.no_of_reviews,
+#         GROUP_CONCAT(DISTINCT K.keyword_name) AS keyword_name,
+#         GROUP_CONCAT(DISTINCT S.speciality_name) AS speciality_name,
+#         GROUP_CONCAT(DISTINCT RSM.url) AS social_media_links
+#         FROM Restaurant_Info RI
+#         LEFT JOIN Restaurant_Keywords RK ON RI.restaurant_id = RK.restaurant_id
+#         LEFT JOIN Keywords K ON RK.keyword_id = K.keyword_id
+#         LEFT JOIN Restaurant_Speciality RS ON RI.restaurant_id = RS.restaurant_id
+#         LEFT JOIN Speciality S ON RS.speciality_id = S.speciality_id
+#         LEFT JOIN Restaurant_Social_Media RSM ON RI.restaurant_id = RSM.restaurant_id
+#         WHERE 1=1
+#          OR K.keyword_name LIKE '%Asian%' OR RI.address LIKE '%Moldova%' OR RI.rating >= 4 OR RI.no_of_reviews >= 20 OR S.speciality_name LIKE '%Coffee%'
+#         GROUP BY
+#         RI.restaurant_id,
+#         RI.name,
+#         RI.map_link,
+#         RI.contact_info,
+#         RI.rating,
+#         RI.no_of_reviews;"""
+
+
+# x = execute_sql_query(query)
 # print(x)
