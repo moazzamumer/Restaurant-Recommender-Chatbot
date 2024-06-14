@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy.orm import sessionmaker,  declarative_base, Session
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine
 import uvicorn
 import base_models, models, constants
