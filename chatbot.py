@@ -3,8 +3,8 @@ import crud, constants
 import re
 
 class GenAI:
-    def __init__(self, api_key):
-        self.api_key = api_key
+    def __init__(self):
+        self.api_key = constants.API_KEY
         genai.configure(api_key=self.api_key)
         self.model = genai.GenerativeModel('gemini-pro')
         self.user_preferences = {}
@@ -21,7 +21,7 @@ class GenAI:
     def initialize_prompt(self, conversation_history, curr_qs):
         prompt = f"You are a helpful assistant that helps users find restaurants in Moldova based on their preferences by asking questions. \
                 Given a user's conversation history and current question that is to be asked. \
-                Ask this current question in casual tone keeping in view previous responses. \
+                Ask this current question in casual tone keeping in view previous responses and user language. \
                 Coversation History : {conversation_history}. \
                 Current question to be asked : {curr_qs}. \
                 if there is no conversation history, initiate the chat from the message received from user"
@@ -135,14 +135,14 @@ class GenAI:
             query += group_by_clause
             print("Query printed....",query)
             results = crud.execute_sql_query(query)
-            if results:
+            if len(results) > 2:
                 return results  # Return results if found
 
         return [] 
 
     def format_query_results(self, result):
         prompt = f"""
-        Given the results of following query : {constants.db_query}. \
+        Given the results of following query : {constants.DB_QUERY}. \
         Format the following restaurant information in a beautiful, easy-to-read format:
         {result}.
         """
@@ -161,12 +161,14 @@ class GenAI:
         if self.current_question_index < len(self.questions):
             next_question = self.ask_next_question(conversation_history)
             crud.insert_chat_message(user_id, "model", next_question)
-            print("Model: ", next_question)
+            #print("Model: ", next_question)
             return next_question
         else:
             result = self.query_and_result(self.user_preferences)
             formatted_result = self.format_query_results(result)
+            if formatted_result is None:
+                return {"message" : "No restaurants found with these preferences."}
             response = f"Okay, I've taken your preferences. Searching restaurants for you...." + "\n" + "\n" + f"{formatted_result}"
             crud.insert_chat_message(user_id, "model", response)
-            print("Model: ", response)
+            #print("Model: ", response)
             return response
