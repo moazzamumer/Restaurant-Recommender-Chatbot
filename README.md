@@ -10,14 +10,14 @@ This project is a restaurant recommender chatbot built using FastAPI and Google 
 - Asynchronous API built with FastAPI.
 
 ## Project Structure
-.
-├── app.py # Main FastAPI application
-├── genai.py # GenAI class to handle chatbot logic and interactions
-├── crud.py # CRUD operations for interacting with the SQLite database
-├── chat.db # SQLite database file
-├── requirements.txt # Python dependencies
-├── README.md # Project README file
-└── schema.sql # SQL schema for database setup
+
+- app.py # Main FastAPI application
+- genai.py # GenAI class to handle chatbot logic and interactions
+- crud.py # CRUD operations for interacting with the SQLite database
+- chat.db # SQLite database file
+- requirements.txt # Python dependencies
+- README.md # Project README file
+- schema.sql # SQL schema for database setup
 
 ## Setup and Installation
 
