@@ -17,7 +17,7 @@ This project is a restaurant recommender chatbot built using FastAPI and Google 
 - chat.db # SQLite database file
 - requirements.txt # Python dependencies
 - README.md # Project README file
-- schemas.py # pydantic models
+- models.py # SQL schema for database setup
 
 ## Setup and Installation
 
