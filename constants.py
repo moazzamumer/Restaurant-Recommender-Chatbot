@@ -1,5 +1,10 @@
-API_KEY = "AIzaSyCq6AMEGQCc73BNKgUvpUQ5JI0H66vGsug"
-DATABASE_URL = "sqlite:///./chat.db"
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
+
+API_KEY = os.getenv("API_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 DB_QUERY = """SELECT
   RI.name,
